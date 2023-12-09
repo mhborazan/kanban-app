@@ -3,7 +3,7 @@ import Task from "./Task";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import kanbanStore from "../store";
 
-export default function Status({ tasks, title, id }) {
+export default function Status({ tasks, title, id, color }) {
   const newTask = kanbanStore((state) => state.newTask);
   const removeStatus = kanbanStore((state) => state.removeStatus);
 
@@ -26,6 +26,7 @@ export default function Status({ tasks, title, id }) {
       {(provided) => (
         <div
           className="status"
+          style={{ backgroundColor: color }}
           {...provided.droppableProps}
           ref={provided.innerRef}
         >

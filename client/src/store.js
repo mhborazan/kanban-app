@@ -41,9 +41,12 @@ const kanbanStore = create((set, get) => ({
     });
     await updateDB(get().statuses);
   },
-  newStatus: async (title) => {
+  newStatus: async (title, color) => {
     set((state) => ({
-      statuses: [...state.statuses, { id: uniqid(), title: title, tasks: [] }],
+      statuses: [
+        ...state.statuses,
+        { id: uniqid(), title: title, color, tasks: [] },
+      ],
     }));
     await updateDB(get().statuses);
   },

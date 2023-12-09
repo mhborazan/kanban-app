@@ -76,5 +76,27 @@ body {
 input {
   margin: 5px;
   padding: 5px;
-  width: 90px;
+  width: 70px;
+  border: 1px solid transparent;
+  color: white;
+}
+input:focus {
+  border: 1px solid black;
+  outline: 0;
+}
+.colorPicker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.modal {
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 3px;
 }

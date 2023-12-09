@@ -20,7 +20,7 @@ app.use(
 //Routes
 app.get("/", async (req, res) => {
   try {
-    const allStatuses = await StatusModel.find();
+    const allStatuses = await StatusModel.find().sort({ order: 1 });
     res.json({ success: true, data: allStatuses });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -29,6 +29,11 @@ app.get("/", async (req, res) => {
 app.put("/", async (req, res) => {
   try {
     const { statuses } = req.body;
+    let order = 0;
+    statuses.forEach((status) => {
+      status.order = order;
+      order++;
+    });
     for await (let status of statuses) {
       let check = await StatusModel.exists({ id: status.id });
       if (check === null) {

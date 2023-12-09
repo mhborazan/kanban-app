@@ -82,6 +82,7 @@ export default function App() {
                           tasks={status.tasks}
                           title={status.title}
                           id={status.id}
+                          color={status.color}
                         />
                       }
                     </div>

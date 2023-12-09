@@ -8,6 +8,8 @@ const statusSchema = new mongoose.Schema({
   id: String,
   title: String,
   tasks: [taskSchema],
+  order: Number,
+  color: String,
 });
 
 const StatusModel = mongoose.model("status", statusSchema);
