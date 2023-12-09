@@ -1,9 +1,11 @@
 import { create } from "zustand";
 import uniqid from "uniqid";
+import updateDB from "./hooks/updateStatuses";
+import deleteStatus from "./hooks/deleteStatus";
 
-const kanbanStore = create((set) => ({
+const kanbanStore = create((set, get) => ({
   statuses: [],
-  newTask: (statusId, title) => {
+  newTask: async (statusId, title) => {
     set((state) => {
       const updatedStatuses = state.statuses.map((status) => {
         if (status.id === statusId) {
@@ -19,8 +21,9 @@ const kanbanStore = create((set) => ({
         statuses: updatedStatuses,
       };
     });
+    await updateDB(get().statuses);
   },
-  removeTask: (statusId, taskId) => {
+  removeTask: async (statusId, taskId) => {
     set((state) => {
       const updatedStatuses = state.statuses.map((status) => {
         if (status.id === statusId) {
@@ -36,20 +39,26 @@ const kanbanStore = create((set) => ({
         statuses: updatedStatuses,
       };
     });
+    await updateDB(get().statuses);
   },
-  newStatus: (title) =>
+  newStatus: async (title) => {
     set((state) => ({
       statuses: [...state.statuses, { id: uniqid(), title: title, tasks: [] }],
-    })),
-  removeStatus: (statusId) => {
+    }));
+    await updateDB(get().statuses);
+  },
+  removeStatus: async (statusId) => {
     set((state) => ({
       statuses: state.statuses.filter((status) => status.id !== statusId),
     }));
+    await deleteStatus(statusId);
   },
-  updateStatuses: (statuses) =>
+  updateStatuses: async (statuses) => {
     set((state) => ({
       statuses: [...statuses],
-    })),
+    }));
+    await updateDB(statuses);
+  },
 }));
 
 export default kanbanStore;

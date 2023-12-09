@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import kanbanStore from "./store";
 import Status from "./components/Status";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import NewStatus from "./components/NewStatus";
+import getStatuses from "./hooks/getStatuses";
 
 export default function App() {
   const statuses = kanbanStore((state) => state.statuses);
   const updateStatuses = kanbanStore((state) => state.updateStatuses);
+  useEffect(() => {
+    (async () => {
+      let statusesData = await getStatuses();
+      updateStatuses(statusesData);
+    })();
+  }, []);
+
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
     if (!destination) return;
@@ -48,12 +56,7 @@ export default function App() {
       tasks: newDestinationTasks,
     };
     updateStatuses(newStatutes);
-    console.log("statusSourceIndex", statusSourceIndex);
-    console.log("statusDestinationIndex", statusDestinationIndex);
-    console.log("newSourceTasks", newSourceTasks);
-    console.log("newDestinationTasks", newDestinationTasks);
   };
-
   return (
     <DragDropContext onDragEnd={handleDragDrop}>
       <div>
